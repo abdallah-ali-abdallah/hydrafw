@@ -1,0 +1,17 @@
+{
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "make-build",
+            "command": "make",
+            "args": [
+                "-j16"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "group": "build",
+            "detail": "Make build"
+        }
+    ]
+}
