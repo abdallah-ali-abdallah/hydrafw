@@ -50,7 +50,7 @@
 /*
  * MCU type as defined in the ST header.
  */
-#define STM32F405xx
+#define STM32F407xx
 /*
  * IO pins assignments.
  */

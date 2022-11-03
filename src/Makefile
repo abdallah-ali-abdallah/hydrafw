@@ -160,7 +160,7 @@ endif
 
 # Define linker script file here
 ifeq ($(STM32F4XX),1)
-LDSCRIPT= $(STARTUPLD)/STM32F405xG.ld
+LDSCRIPT= $(STARTUPLD)/STM32F407xG.ld
 endif
 
 # C sources that can be compiled in ARM or THUMB mode depending on the global

@@ -15,7 +15,7 @@ limitations under the License.
 #ifndef _STM32_H_
 #define _STM32_H_
 
-#include "stm32f405xx.h"
+#include "stm32f407xx.h"
 #include "stm32f4xx_hal.h"
 
 #endif /* _STM32_H_ */
