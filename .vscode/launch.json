@@ -1,22 +1,18 @@
-// Configure debug launch settings
-// Feel free to copy these and modify them for your debugger and MCU
 {
-    "version": "0.2.0",
-    "projectName": "test-f407vg",
+    "version": "0.3.0",
+    "projectName": "HydraBus++",
     "configurations": [
         {
             "name": "JLink launch",
             "cwd": "${workspaceRoot}",
-            "executable": "${workspaceRoot}/build/test-f407vg.elf",
+            "executable": "${workspaceRoot}/src/build/hydrafw.elf",
             "request": "launch",
             "type": "cortex-debug",
             "servertype": "jlink",
             "device": "STM32F407VG",
             "interface": "swd",
-            "runToMain": true, // else it starts at reset handler - not interested
             "preLaunchTask": "Build all", // configured in tasks.json
-            // "preLaunchCommands": ["Build all"], // you can execute command instead of task
-            "svdFile": "", // Include svd to watch device peripherals
+            "svdFile": "${workspaceRoot}/utils/STM32F407.svd", // Include svd to watch device peripherals
             "swoConfig":
             {
                 "enabled": true,
@@ -38,16 +34,14 @@
         {
             "name": "JLink attach",
             "cwd": "${workspaceRoot}",
-            "executable": "${workspaceRoot}/build/test-f407vg.elf",
+            "executable": "${workspaceRoot}/src/build/hydrafw.elf",
             "request": "attach",
             "type": "cortex-debug",
             "servertype": "jlink",
             "device": "STM32F407VG",
             "interface": "swd",
-            "runToMain": true, // else it starts at reset handler - not interested
             "preLaunchTask": "Build all", // configured in tasks.json
-            // "preLaunchCommands": ["Build all"], // you can execute command instead of task
-            "svdFile": "", // Include svd to watch device peripherals
+            "svdFile": "${workspaceRoot}/utils/STM32F407.svd", // Include svd to watch device peripherals
             "swoConfig":
             {
                 "enabled": true,
@@ -76,7 +70,7 @@
             "device": "STM32F407VG",
             "interface": "swd",
             "preLaunchTask": "make-build", // configured in tasks.json
-            "svdFile": "${workspaceRoot}/STM32F407.svd" // Include svd to watch device peripherals
+            "svdFile": "${workspaceRoot}/utils/STM32F407.svd", // Include svd to watch device peripherals
         },
         {
             "name": "STlink attach",
@@ -88,7 +82,7 @@
             "device": "STM32F407VG",
             "interface": "swd",
             "preLaunchTask": "make-build", // configured in tasks.json
-            "svdFile": "${workspaceRoot}/STM32F407.svd", // Include svd to watch device peripherals
+            "svdFile": "${workspaceRoot}/utils/STM32F407.svd", // Include svd to watch device peripherals
             "swoConfig": {} // currently (v1.7.0) not supported
         },
     ]
