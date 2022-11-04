@@ -31,12 +31,17 @@ int cmd_freq(t_hydra_console *con, t_tokenline_parsed *p)
 	mode_config_proto_t* proto = &con->mode->proto;
 	(void) p;
 
-	bsp_freq_get_values(proto->dev_num, &frequency, &duty);
+	/**
+	 * @brief Read frequencey from gpio PC6
+	 * @todo previoud implmentation was buggy and didn't work on F407VG chip
+	 * (review datasheet) to add some token parsing and expand the frequnecy reading to multiple GPIO if possible
+	 */
+	bsp_freq_get_values(BSP_DEV_FREQ1, &frequency, &duty);
 	cprintf(con, "Frequency : %dHz\r\n", frequency);
 	cprintf(con, "Duty : %d%%\r\n", duty);
 	cprintf(con, "\r\n");
 
-	bsp_freq_deinit(proto->dev_num);
+	bsp_freq_deinit(BSP_DEV_FREQ1);
 
 	return TRUE;
 }
