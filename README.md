@@ -1,7 +1,7 @@
-HydraFW++ un-official firmware port for STM32f407 (Mainly to be used with F4DISCOVERY)
+HydraFW++ firmware port for STM32f407 (Mainly to be used with F4DISCOVERY)
 ========
 
-HydraFW is a native C (and asm) open source firmware for HydraBus v1 board.
+HydraFW is a native C (and asm) open source firmware for HydraBus v1 board and can be used on F4DISCOVERY BOARD
 
 You can Buy HydraBus v1 Online: http://hydrabus.com/buy-online
 
