@@ -24,13 +24,16 @@
 #include <string.h>
 #include <ctype.h>
 
+#define MAX_GPIO_PORTS	4 //STM32F407VG (F4DISCOVERY) has 100LQFP pin package with 4 port GPIOS (A,B,C,D)
+
 static const char *str_pin_error = "Invalid pin '%s'. Select one or more "
 				   "of PA0-15, PB0-11, PC0-15.\r\n";
 
 static uint32_t ports[] = {
 	BSP_GPIO_PORTA,
 	BSP_GPIO_PORTB,
-	BSP_GPIO_PORTC
+	BSP_GPIO_PORTC,
+	BSP_GPIO_PORTD
 };
 
 static void read_continuous(t_hydra_console *con, uint16_t *gpio, int period)
@@ -39,7 +42,7 @@ static void read_continuous(t_hydra_console *con, uint16_t *gpio, int period)
 	bool result;
 
 	cprintf(con, "Interrupt by pressing user button.\r\n");
-	for (port = 0; port < 3; port++) {
+	for (port = 0; port < MAX_GPIO_PORTS; port++) {
 		for (pin = 0; pin < 16; pin++) {
 			if (gpio[port] & (1 << pin))
 				cprintf(con, "P%c%d%s ", port + 'A', pin,
@@ -49,7 +52,7 @@ static void read_continuous(t_hydra_console *con, uint16_t *gpio, int period)
 	cprint(con, "\r\n", 2);
 
 	while (!hydrabus_ubtn()) {
-		for (port = 0; port < 3; port++) {
+		for (port = 0; port < MAX_GPIO_PORTS; port++) {
 			for (pin = 0; pin < 16; pin++) {
 				if (!(gpio[port] & (1 << pin)))
 					continue;
@@ -67,7 +70,7 @@ static void read_once(t_hydra_console *con, uint16_t *gpio)
 	int port, pin;
 	bool result;
 
-	for (port = 0; port < 3; port++) {
+	for (port = 0; port < MAX_GPIO_PORTS; port++) {
 		for (pin = 0; pin < 16; pin++) {
 			if (!(gpio[port] & (1 << pin)))
 				continue;
@@ -79,7 +82,7 @@ static void read_once(t_hydra_console *con, uint16_t *gpio)
 
 int cmd_gpio(t_hydra_console *con, t_tokenline_parsed *p)
 {
-	uint16_t gpio[3] = { 0 };
+	uint16_t gpio[4] = { 0 };
 
 	int mode, pull, state, port, pin, read, period, continuous, t, max;
 	bool mode_changed, pull_changed;
@@ -157,7 +160,7 @@ int cmd_gpio(t_hydra_console *con, t_tokenline_parsed *p)
 				cprintf(con, str_pin_error, str);
 				return FALSE;
 			}
-			if (str[1] < 'A' || str[1] > 'C') {
+			if (str[1] < 'A' || str[1] > 'D') { // STM32F4DISCOVERY board has 100 PIN including GPIO PORT A,B,C,D
 				cprintf(con, str_pin_error, str);
 				return FALSE;
 			}
@@ -194,7 +197,7 @@ int cmd_gpio(t_hydra_console *con, t_tokenline_parsed *p)
 		t++;
 	}
 
-	if (!gpio[0] && !gpio[1] && !gpio[2]) {
+	if (!gpio[0] && !gpio[1] && !gpio[2] && !gpio[3]) {
 		cprintf(con, "Please select at least one GPIO pin.\r\n");
 		return FALSE;
 	}
@@ -205,7 +208,7 @@ int cmd_gpio(t_hydra_console *con, t_tokenline_parsed *p)
 	}
 
 	if((mode_changed == true) || (pull_changed == true)) {
-		for (port = 0; port < 3; port++) {
+		for (port = 0; port < MAX_GPIO_PORTS; port++) {
 			for (pin = 0; pin < 16; pin++) {
 				if (!(gpio[port] & (1 << pin)))
 					continue;
@@ -224,7 +227,7 @@ int cmd_gpio(t_hydra_console *con, t_tokenline_parsed *p)
 			cprintf(con, "Setting ");
 		else
 			cprintf(con, "Clearing ");
-		for (port = 0; port < 3; port++) {
+		for (port = 0; port < MAX_GPIO_PORTS; port++) {
 			if (!gpio[port])
 				continue;
 			for (pin = 0; pin < 16; pin++) {
