@@ -24,7 +24,7 @@
 #include <string.h>
 #include <ctype.h>
 
-#define MAX_GPIO_PORTS	4 //STM32F407VG (F4DISCOVERY) has 100LQFP pin package with 4 port GPIOS (A,B,C,D)
+#define MAX_GPIO_PORTS	4 // STM32F4DISCOVERY board has 100 PIN LQFP chip including GPIO PORT A,B,C,D
 
 static const char *str_pin_error = "Invalid pin '%s'. Select one or more "
 				   "of PA0-15, PB0-11, PC0-15.\r\n";
@@ -160,7 +160,7 @@ int cmd_gpio(t_hydra_console *con, t_tokenline_parsed *p)
 				cprintf(con, str_pin_error, str);
 				return FALSE;
 			}
-			if (str[1] < 'A' || str[1] > 'D') { // STM32F4DISCOVERY board has 100 PIN including GPIO PORT A,B,C,D
+			if (str[1] < 'A' || str[1] > 'D') { // STM32F4DISCOVERY board has 100 PIN LQFP chip including GPIO PORT A,B,C,D
 				cprintf(con, str_pin_error, str);
 				return FALSE;
 			}
