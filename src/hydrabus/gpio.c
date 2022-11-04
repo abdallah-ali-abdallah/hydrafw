@@ -24,7 +24,13 @@
 #include <string.h>
 #include <ctype.h>
 
-#define MAX_GPIO_PORTS	4 // STM32F4DISCOVERY board has 100 PIN LQFP chip including GPIO PORT A,B,C,D
+/**
+ * @brief STM32F4DISCOVERY board has 100 PIN LQFP chip including GPIO PORT A,B,C,D,E
+ * 
+ */
+#define MAX_GPIO_PORTS			 5 	
+#define MIN_GPIO_PORTS_CHAR		'A' 
+#define MAX_GPIO_PORTS_CHAR		'E' 
 
 static const char *str_pin_error = "Invalid pin '%s'. Select one or more "
 				   "of PA0-15, PB0-11, PC0-15.\r\n";
@@ -33,7 +39,8 @@ static uint32_t ports[] = {
 	BSP_GPIO_PORTA,
 	BSP_GPIO_PORTB,
 	BSP_GPIO_PORTC,
-	BSP_GPIO_PORTD
+	BSP_GPIO_PORTD,
+	BSP_GPIO_PORTE
 };
 
 static void read_continuous(t_hydra_console *con, uint16_t *gpio, int period)
@@ -82,7 +89,7 @@ static void read_once(t_hydra_console *con, uint16_t *gpio)
 
 int cmd_gpio(t_hydra_console *con, t_tokenline_parsed *p)
 {
-	uint16_t gpio[4] = { 0 };
+	uint16_t gpio[MAX_GPIO_PORTS] = { 0 };
 
 	int mode, pull, state, port, pin, read, period, continuous, t, max;
 	bool mode_changed, pull_changed;
@@ -160,7 +167,7 @@ int cmd_gpio(t_hydra_console *con, t_tokenline_parsed *p)
 				cprintf(con, str_pin_error, str);
 				return FALSE;
 			}
-			if (str[1] < 'A' || str[1] > 'D') { // STM32F4DISCOVERY board has 100 PIN LQFP chip including GPIO PORT A,B,C,D
+			if (str[1] < MIN_GPIO_PORTS_CHAR || str[1] > MAX_GPIO_PORTS_CHAR) { // STM32F4DISCOVERY board has 100 PIN LQFP chip including GPIO PORT A,B,C,D
 				cprintf(con, str_pin_error, str);
 				return FALSE;
 			}
@@ -174,6 +181,10 @@ int cmd_gpio(t_hydra_console *con, t_tokenline_parsed *p)
 					gpio[port] = 0xFFFF;
 			} else {
 				pin = strtoul(str + 2, &s, 10);
+				/**
+				 * @todo check pin count for each port to validate all pin counts
+				 * 
+				 */
 				if ((*s != 0 && *s != '-') || pin < 0 || pin > 15
 				    || (port == 1 && pin > 11)) {
 					cprintf(con, str_pin_error, str);
@@ -197,7 +208,7 @@ int cmd_gpio(t_hydra_console *con, t_tokenline_parsed *p)
 		t++;
 	}
 
-	if (!gpio[0] && !gpio[1] && !gpio[2] && !gpio[3]) {
+	if (!gpio[0] && !gpio[1] && !gpio[2] && !gpio[3] && !gpio[4]) {
 		cprintf(con, "Please select at least one GPIO pin.\r\n");
 		return FALSE;
 	}

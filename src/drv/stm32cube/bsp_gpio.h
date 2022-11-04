@@ -28,7 +28,8 @@ typedef enum {
 	BSP_GPIO_PORTA = (0x40020000),
 	BSP_GPIO_PORTB = (0x40020400),
 	BSP_GPIO_PORTC = (0x40020800),
-	BSP_GPIO_PORTD = (0x40020C00)
+	BSP_GPIO_PORTD = (0x40020C00),
+	BSP_GPIO_PORTE = (0x40021000)
 } bsp_gpio_port_t;
 
 /* mode_conf use only members dev_gpio_pull & dev_gpio_mode */
